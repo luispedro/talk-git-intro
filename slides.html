@@ -17,6 +17,9 @@
     </style>
   </head>
   <body>
+    <style>
+IMG { max-width: 80%; }
+    </style>
     <textarea id="source">
 
 class: center, middle
@@ -31,6 +34,9 @@ class: center, middle
 - The commands have non-intuitive names and options.
 - The benefits are long term<br />
     You probably would not use version control for an analysis that lasts two hours.
+
+![](https://upload.wikimedia.org/wikipedia/commons/2/2d/Set_of_security_screw_driver_bits.jpg)
+--
 
 ## So, my request:
 
@@ -107,7 +113,8 @@ If we didn't have git, we could make a "poor man's git" in the following way:
 If you were very disciplined, this would actually work. You could then use diff
 to compare versions.
 
-This is basically what git does.
+This poor man's git is not so different from what git does (except git does it
+in a smarter way than copying all the files).
 
 ---
 
@@ -115,7 +122,7 @@ This is basically what git does.
 
 Github is git + bells &amp; whistles
 
-[https://github.com/tobyhodges/ITPP]
+[https://github.com/tobyhodges/ITPP](https://github.com/tobyhodges/ITPP)
 
 
 Let's look at
@@ -133,7 +140,12 @@ For example,
 $ git config --global user.name "YOUR NAME"
 $ git config --global user.email "YOUR EMAIL (IF YOU WANT)"
 $ git config --global color.ui "auto"
+$ git config --global core.editor "nano -w"
 ```
+
+If you want another editor, naturally, you can set it there (including GUI editors).
+
+---
 
 # Using git: step 1
 
@@ -317,7 +329,7 @@ $ git commit
 The "staging area" (aka. as "index") is another feature where git chose power
 over learnability.
 
-![](https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png):w
+![](https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png)
 
 (From [git book](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics).)
 
@@ -332,20 +344,42 @@ $ git commit
 
 Write your commit message.
 
+--
+
 ## What are the advantages doing two steps (`add` and `commit`)?
 
 - You can select bits and pieces to commit (even just parts of files)
 - You can review your changes one last time (`git diff --staged`)
 
-If you don't like it, you can always skip the staging step.
+---
+# Git commit options
+
+Specifying the message inline
+
+```bash
+$ git commit -m "My commit message"
+```
+
+A good commit message will have a single, short, one line summary at the top,
+then a blank line, then a longer explanation:
+
+```
+New analysis: diversity/temperature association
+
+Plot the relationship between the diversity of a sample and the temperature of
+the site.
+
+As part of this commit, simplify the data loading code.
+```
 
 ---
+
 # Commit IDs
 
 We have seen these bizarre commit-ids (e.g.,
 `28c80e7299977392a3be6b00ad5be71cf3f46f8a`) show up in the log.
 
-We can add a tag to a commit for convenient
+We can add a tag to a commit for convenience
 
 ```bash
 $ git tag v1.0
@@ -356,8 +390,9 @@ Some names are magic
 - `HEAD` is what we currently checked out.
 - `HEAD~1` is the previous commit
 - `master` is the most up to date commit.
+---
 
-[!(https://git-scm.com/book/en/v2/book/03-git-branching/images/branch-and-history.png)]
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/branch-and-history.png)
 
 ---
 # Throwing away changes
@@ -377,6 +412,8 @@ $ git checkout HEAD README.md
 
 This checks out from `HEAD` only the file `README.md`.
 
+--
+
 **This is one of the few irreversible operations in git**.
 
 **It's also _very useful_.**
@@ -390,11 +427,13 @@ This checks out from `HEAD` only the file `README.md`.
 
 We have seen
 
-- `git clone`: we got a copy of the whole repository (the whole history)
+- `git clone`: we got a copy of the whole repository (including history)
 - `git log`: a list of commits (which we also saw on github)
 - `git checkout COMMIT_ID`: going back &amp; forward in history
 - `git add`/`git commit`: Adding new commits
 - `git tag`: add a tag to a commit
+
+--
 
 What we have not seen:
 
@@ -410,14 +449,258 @@ We will not discuss:
 
 # Starting from the other side
 
-Now, we
+How do we *initialize* a new git repository?
 
 ```bash
+$ mkdir git-notes-luispedro
+$ cd git-notes-luispedro
 $ git init
 ```
 
+This transforms the current directory into a git repository (i.e., add the
+`.git` directory and its magic files).
+
+```bash
+$ ls
+...
+$ ls -a
+...
+$ git status
+...
+
+```
+
+**Git init does not add any files to the repository.**
+
 ---
+
+# Adding files to our repository and committing.
+
+We have seen this before.
+
+```bash
+$ nano basics.txt
+...
+$ git add basics.txt
+$ git commit
+...
+```
+
+---
+# Starting with Github
+
+Please go to [github.com](https://github.com) and get a new user account.
+
+![](figures/green-post-it.png) Put up a green sticker once you have done so.
+
+---
+# Pushing your changes to Github
+
+How do we tell git on our machine about this github thing?
+
+We need to introduce a new concept: "remotes".
+
+Fortunately, github is pretty good about helping out.
+
+
+--
+
+```bash
+$ git remote add origin https://github.com/luispedro/git-notes-luispedro
+...
+```
+
+We **add a remote** called _origin_ (just a convention) pointing to
+https://github.com/luispedro/git-notes-luispedro
+
+---
+# Technical note on authentication
+
+Please type
+
+```bash
+$ unset SSH_ASKPASS
+```
+
+and we will type out our username/password on the command line.
+
+--
+
+This works but is not the best way to do it. There is a solution (SSH keys),
+but we will not cover it here. The github documentation explains it.
+
+
+---
+
 # Collaborating with git
+
+I find git is even for single-user projects, but it becomes even more important
+when working with others.
+
+---
+
+# Shared git repository
+
+![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/centralized_workflow.png)
+
+---
+
+# Sharing a repository
+
+1. Pair up
+2. Pick one of you to be the administrator (_Alice_)
+3. The administrator should add the other member of the group (_Bob_) as a collaborator to their repository
+4. _Bob_ should now clone from _Alice_'s repository
+
+![](figures/green-post-it.png)
+Once you get here, please put up a green sticker.
+
+--
+
+5. _Bob_ should now change something in the repository, `git add`, `git
+   commit`, and finally call `git push`
+--
+
+6. Check that github now shows the newer changes
+7. _Alice_ can now `git pull` the changes from github
+
+![](figures/green-post-it.png)
+Once you get here, please put up a green sticker.
+
+---
+# Merging &amp; conflicts
+
+1.  _Alice_ clones from the repository (at version `X`) and makes a change (add a file named `alice.txt` describing your favorite food).
+2.  _Bob_ clones from the repository (at version `X`)and makes a change (add a file named `bob.txt` describing your favorite food).
+
+What happens when they want to push their changes back?
+
+--
+
+Whoever pushes first will change the repository on github.
+
+```bash
+$ git push
+... OK
+```
+
+And the second person to push will get an error:
+
+```bash
+$ git push
+To https://github.com/.....
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/vlad/planets.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+---
+# Merging &amp; Conflicts
+
+```bash
+$ git pull
+...
+```
+
+git _merged the changes_ and built a new directory which contains *both* Alice and Bob's changes.
+
+--
+
+This all happened locally (in Bob's computer). Bob can now push the merged changes to github:
+
+```bash
+$ git push
+```
+
+--
+
+and Alice can pull:
+
+```bash
+$ git pull
+```
+
+Now, they are back in sync.
+
+---
+# Conflicts
+
+What if git cannot merge?
+
+1. _Alice_ edits `alice.txt` and `add`s, `commit`s and `push`es her changes.
+2. _Bob_  edits `alice.txt` and `add`s, commit`s and `push`es his changes (**after** Alice).
+
+_Bob_ will get the same non-fast-forward error and will try to `git pull` only
+to see a conflict message!
+
+```bash
+[master 687aaf1] Bob's favorite drink
+ 1 file changed, 1 insertion(+)
+  create mode 100644 bob.txt
+  luispedro@rabbit:/tmp/t/git-notes-luispedro  §git pull
+  remote: Counting objects: 3, done.
+  remote: Compressing objects: 100% (2/2), done.
+  remote: Total 3 (delta 0), reused 0 (delta 0)
+  Unpacking objects: 100% (3/3), done.
+  From /tmp/git-notes-luispedro
+     3f9cca8..262601a  master     -> origin/master
+     Auto-merging bob.txt
+     CONFLICT (add/add): Merge conflict in bob.txt
+     Automatic merge failed; fix conflicts and then commit the result.
+```
+
+---
+# Resolving conflicts
+
+Git is not magic. If it cannot merge, it will ask _Bob_ to fix it.
+
+```bash
+$ git status
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 1 and 1 different commit each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+    both added:      bob.txt
+```
+
+---
+# You must manually fix the conflict
+
+(_Alice_ should now work with _Bob_)
+
+Edit `bob.txt`:
+
+```bash
+$ nano bob.txt
+<<<<<<< HEAD
+Bob likes mango lassi
+=======
+Bob likes gin & tonic
+>>>>>>> 262601a49bdbc69f1dc65a558f80b97975f6f896
+```
+
+--
+```bash
+$ git add bob.txt
+$ git commit
+$ git push
+```
+
+Now look at how the repository looks like on github.
+
+See `Graphs` tab and then `Network`.
+
+---
+# Pull requests
 
 Git is extremely flexible and supports different workflows/code management
 styles:
@@ -428,33 +711,126 @@ styles:
 
 Note that git itself does not care about any of this: it's all "human level".
 
----
-
-# Centralized git repository system
+![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/integration-manager.png)
 
 ---
 
-# Pull requests
+# The PR model
 
-Pull requests are easy to do with github or one of its competitors (gitlab,
-bitbucket, ...), but some people still do them *the old fashioned way* (i.e.,
-by email).
+The pull request model (in general):
+
+1. I publish my repository
+2. You make your changes publicly available
+3. You ask (request) that I **pull** from your repository
+
+You can do this the old fashioned way, with email, but it's much easier with github.
+
+--
+
+4. _Alice_ should _fork_ _Bob_'s repository on github.
+5. _Alice_ should clone from **her fork** to her computer.
 
 ---
+# Mixed centralized/pull request model
+
+You can mix centralized and PR management in the same project.
+--
+
+It sounds very abstract, but here is a realistic situation where it is _very
+natural_ to have a mixed centralized/PR model:
+
+> You start a project with your lab mates and put it on github. Since it's just
+> 3 of you, you work in the centralized model, using a lab github page as the
+> centre.
+>
+> Later, you make the repository public and others start forking and submitting
+> PRs.
+>
+> Your small team (the core developers) may still prefer to work in the
+> centralized model, but you might not want to give others on the outside
+> access.
+
+Probably **most open source software** works like this.
+
 ---
 
 # Integrate git(hub) with other functionality
 
 - Github pages
 - External
+- ...
+
+There are many services built around git.
 
 ---
+
+# Git based services
+
+We showed off github as it's the most widely used service, but there are
+others:
+
+1. Github
+2. Gitlab
+3. Bitbucket
+
+These are all fairly similar. Github typically requires you to get a paid plan
+to have private repositories (i.e., not open source), but you can also ask for
+an educational acccount.
+
+---
+# A few remarks on software licenses
+
+If you make your code public, then you should explicitly add a license.
+
+<style>
+DT { font-weight: bold; }
+DD { padding-bottom: 1em; }
+</style>
+<dl>
+<dt>Default (if you say nothing)</dt>
+<dd>All rights reserved.<br />
+In copyright law, the creator retains all rights to their creation unless they give/sell them away.<br />
+Technically, nobody can do anything with your code.
+</dd>
+
+<dt>GPL/Copyleft</dt>
+<dd>Share alike</dd>
+
+<dt>BSD/MIT</dt>
+<dd>Very free</dd>
+</dl>
+
+Obviously, IANAL.
+
+The equivalent for non-code (text, images, &amp;c) is the [Creative
+commons](https://creativecommons.org/) family of licenses.
+
+---
+# What we left out (the other 99%)
+
+We can have long discussions on how to organize branches.
+
+There are several advanced git commands that allow you to rewrite history, undo
+mistakes, and perform advanced branch manipulations.
+
+--
+
+![](https://bookwormsandcoffeemonsters.files.wordpress.com/2014/12/here-be-dragons.jpg)
+
+---
+
+<div style="padding-top: 60%; text-align: right; padding-right: 10em;">
+Thank you.
+</div>
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+var slideshow = remark.create({
+    countIncrementalSlides: false,
+    highlightLines: true,
+    });
     </script>
   </body>
 </html>
