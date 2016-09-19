@@ -21,19 +21,434 @@
 
 class: center, middle
 
-# Title
+# Introduction to Git &amp; Github
 
 ---
 
-# Agenda
+# Git is hard to teach
 
-1. Introduction
-2. Deep-dive
-3. ...
+- Git is _flexible_ supporting many **different workflows** (which means it's complicated)
+- The commands have non-intuitive names and options.
+- The benefits are long term<br />
+    You probably would not use version control for an analysis that lasts two hours.
+
+## So, my request:
+
+Suspend your skepticism for about an hour and then we can come back to it.
 
 ---
 
-# Introduction
+# What problems does version control solve?
+
+[![Piled Higher and Deeper by Jorge Cham, http://www.phdcomics.com/comics/archive_print.php?comicid=1531](../fig/phd101212s.png)](http://www.phdcomics.com)
+
+"Piled Higher and Deeper" by Jorge Cham, http://www.phdcomics.com
+
+---
+
+# Why use version control?
+
+- Making collaboration easier than "pass the baton"
+- Traveling back in time to earlier versions of the project.
+
+The issues above are also solved by Word "Track Changes", Google Docs automatic
+revisions, or Dropbox's history.
+
+- Allowing you to try things that can easily be rolled back.
+- Keeping a version of record.
+- Keeping separate branches.
+
+### Where to use version control
+
+- Code. Version control was made for code.
+- Manuscripts
+- Everything
+
+Text-based files have built-in support, other types of files can also be used.
+
+---
+
+# Diffing
+
+```bash
+$ cat file1.txt
+first line
+second line
+$ cat file2.txt
+first line
+third line
+$ diff -u file1.txt file2.txt
+--- file1.txt   2016-09-18 16:47:43.000415047 +0200
++++ file2.txt   2016-09-18 16:47:49.203562118 +0200
+@@ -1,2 +1,2 @@
+ first line
+ -second line
+ +third line
+```
+
+---
+
+# Git's model
+
+- Works on a directory and all its subdirectories.
+
+If we didn't have git, we could make a "poor man's git" in the following way:
+
+- We take a directory for our project `project`.
+- Every once in a while, we make a whole copy of the directory:
+
+    1. `project_first_version_2016_08_22_8:14`
+    2. `project_added_data_2016_08_22_11:27`
+    3. `project_import_data_into_numpy_2016_08_22_15:22`
+    4. `project_basic_stats_2016_08_22_17:01`
+    5. `project_normalization_2016_08_23_9:53`
+    6. ...
+
+If you were very disciplined, this would actually work. You could then use diff
+to compare versions.
+
+This is basically what git does.
+
+---
+
+# Exploring GitHub
+
+Github is git + bells &amp; whistles
+
+[https://github.com/tobyhodges/ITPP]
+
+
+Let's look at
+- History
+- Diffs
+
+For example,
+[this diff](https://github.com/tobyhodges/ITPP/commit/7f765f1bd4149ba12d7927fa5bc0cfac68ba1f78)
+
+---
+
+# Using git: step 0
+
+```bash
+$ git config --global user.name "YOUR NAME"
+$ git config --global user.email "YOUR EMAIL (IF YOU WANT)"
+$ git config --global color.ui "auto"
+```
+
+# Using git: step 1
+
+```bash
+$ git clone https://github.com/tobyhodges/ITPP/
+Cloning into 'ITPP'...
+remote: Counting objects: 459, done.
+remote: Total 459 (delta 0), reused 0 (delta 0), pack-reused 459
+Receiving objects: 100% (459/459), 2.88 MiB | 474.00 KiB/s, done.
+Resolving deltas: 100% (257/257), done.
+Checking connectivity... done.
+```
+
+Git now _cloned_ the repository from github to a directory called `ITPP`.
+
+Your copy is now **independent** of the original.
+
+---
+
+# Explore the cloned directory.
+
+Let's explore the directory a bit:
+
+```bash
+$ cd ITPP
+$ ls
+```
+
+---
+
+# Looking at the history
+
+```bash
+$ git log
+...
+```
+
+Same information as on the github website:
+
+- Author
+- Date
+- Comment
+- Funny IDs
+
+---
+
+# Remember the "poor man's git"?
+
+What we have here is
+
+1. the `project` directory (ITPP in this case)
+2. inside a special `.git` folder, git is saving all the previous versions.
+
+
+```bash
+$ git diff 28c80e7299977392a3be6b00ad5be71cf3f46f8a
+...
+```
+
+You can also use dates if you really want
+
+```bash
+$ git diff '@{2016-09-01 18:30:00}'
+```
+
+(This is just another example of git's flexibility over learnability).
+
+---
+# Going back in time
+
+If you have a course that you taught several times, it's sometimes nice again
+"the version I taught in September 2016"?
+
+```bash
+$ ls .ipynb_checkpoints
+ls: cannot access '.ipynb_checkpoints': No such file or directory
+$ git checkout 28c80e7299977392a3be6b00ad5be71cf3f46f8a
+Note: checking out '28c80e7299977392a3be6b00ad5be71cf3f46f8a'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at 28c80e7... merged Karin's changes to WS2 debugging exercise
+$ ls .ipynb_checkpoints
+2_BeginningProgramming-checkpoint.ipynb  3_InputAndOutputMPL-checkpoint.ipynb
+```
+
+---
+
+# GUI Version
+
+```bash
+$ git-cola dag
+```
+
+You can do everything from `git-cola`, but I will use the command line version
+as it's still the _least common denominator_.
+
+---
+
+# Making some changes
+
+1. Let us go back to the latest version (which is called `master` by default):
+
+```bash
+$ git checkout master
+```
+
+2. Check the status
+
+```bash
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+```
+
+3.  Now, we make some changes
+
+```bash
+$ nano README.md
+...
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+(use "git add <file>..." to update what will be committed)
+(use "git checkout -- <file>..." to discard changes in working directory)
+
+    modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+---
+# Git diff
+
+```bash
+$ git diff
+diff --git a/README.md b/README.md
+index 3908015..015fcd9 100644
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,7 @@
+ ## Introduction to Python Programming
+ +
+ +These are the materials used in the software carpentry course.
+ +
+  ###### Materials for a course providing an introduction to programming in Python.
+   
+   __Click the button below to launch the course materials in an interactive environment, thanks to the [Binder](http://mybinder.org) service from [The Freeman Lab](http://thefreemanlab.com).__ (Current build of Binder materials: 07-Apr-2016)  
+```
+
+---
+
+# Committing the changes
+
+```bash
+$ git add README.md
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+(use "git reset HEAD <file>..." to unstage)
+
+      modified:   README.md
+$ git commit
+...
+```
+
+---
+
+# Staging
+
+The "staging area" (aka. as "index") is another feature where git chose power
+over learnability.
+
+![](https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png):w
+
+(From [git book](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics).)
+
+---
+
+# Commiting
+
+```bash
+$ git commit
+...
+```
+
+Write your commit message.
+
+## What are the advantages doing two steps (`add` and `commit`)?
+
+- You can select bits and pieces to commit (even just parts of files)
+- You can review your changes one last time (`git diff --staged`)
+
+If you don't like it, you can always skip the staging step.
+
+---
+# Commit IDs
+
+We have seen these bizarre commit-ids (e.g.,
+`28c80e7299977392a3be6b00ad5be71cf3f46f8a`) show up in the log.
+
+We can add a tag to a commit for convenient
+
+```bash
+$ git tag v1.0
+```
+
+Some names are magic
+
+- `HEAD` is what we currently checked out.
+- `HEAD~1` is the previous commit
+- `master` is the most up to date commit.
+
+[!(https://git-scm.com/book/en/v2/book/03-git-branching/images/branch-and-history.png)]
+
+---
+# Throwing away changes
+
+```bash
+$ nano README.md
+...
+$ git diff
+...
+```
+
+Imagine we do not like these changes. What do we do?
+
+```bash
+$ git checkout HEAD README.md
+```
+
+This checks out from `HEAD` only the file `README.md`.
+
+**This is one of the few irreversible operations in git**.
+
+**It's also _very useful_.**
+
+- Let me check if this code is faster/better? If not, throw it away.
+- Let me add some `print` statements to this code. When I found the bug, throw the `print`s away.
+- Ooops, did I delete/overwrite some files I should not have? Get them back.
+
+---
+# Let's take a breath
+
+We have seen
+
+- `git clone`: we got a copy of the whole repository (the whole history)
+- `git log`: a list of commits (which we also saw on github)
+- `git checkout COMMIT_ID`: going back &amp; forward in history
+- `git add`/`git commit`: Adding new commits
+- `git tag`: add a tag to a commit
+
+What we have not seen:
+
+- how to start a git repository from scratch
+- how to use git for collaboration
+- branching and merging
+
+We will not discuss:
+
+- the other 99% of git options
+
+---
+
+# Starting from the other side
+
+Now, we
+
+```bash
+$ git init
+```
+
+---
+# Collaborating with git
+
+Git is extremely flexible and supports different workflows/code management
+styles:
+
+1. **Centralized**: a single master repository which people clone from/push to.
+2. **Pull request**: only some users can commit to the main repository, others
+   submit changes for approval (pull requests).
+
+Note that git itself does not care about any of this: it's all "human level".
+
+---
+
+# Centralized git repository system
+
+---
+
+# Pull requests
+
+Pull requests are easy to do with github or one of its competitors (gitlab,
+bitbucket, ...), but some people still do them *the old fashioned way* (i.e.,
+by email).
+
+---
+---
+
+# Integrate git(hub) with other functionality
+
+- Github pages
+- External
+
+---
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
