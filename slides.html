@@ -18,7 +18,11 @@
   </head>
   <body>
     <style>
-IMG { max-width: 80%; }
+IMG {
+    max-width: 75%;
+    text-align: center;
+}
+
     </style>
     <textarea id="source">
 
@@ -30,23 +34,27 @@ class: center, middle
 
 # Git is hard to teach
 
-- Git is _flexible_ supporting many **different workflows** (which means it's complicated)
-- The commands have non-intuitive names and options.
-- The benefits are long term<br />
-    You probably would not use version control for an analysis that lasts two hours.
+- Git is _flexible_ supporting many **different workflows**
+- The commands have non-intuitive names and options
+- The benefits are long term: You probably would not use version control for an analysis that lasts two hours.
 
-![](https://upload.wikimedia.org/wikipedia/commons/2/2d/Set_of_security_screw_driver_bits.jpg)
---
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Set_of_security_screw_driver_bits.jpg" style="width:60%; text-align:center">
+
+---
 
 ## So, my request:
 
-Suspend your skepticism for about an hour and then we can come back to it.
+Suspend your skepticism until the break (1½hours) and then we can come back to
+it.
+
 
 ---
 
 # What problems does version control solve?
 
-[![Piled Higher and Deeper by Jorge Cham, http://www.phdcomics.com/comics/archive_print.php?comicid=1531](../fig/phd101212s.png)](http://www.phdcomics.com)
+<div class="center">
+    <img src="figures/phd101212s.png" style="width:40%" />
+</div>
 
 "Piled Higher and Deeper" by Jorge Cham, http://www.phdcomics.com
 
@@ -54,15 +62,24 @@ Suspend your skepticism for about an hour and then we can come back to it.
 
 # Why use version control?
 
+<img src="figures/google-docs-revisions.png" style="float: right;" />
+
 - Making collaboration easier than "pass the baton"
 - Traveling back in time to earlier versions of the project.
 
 The issues above are also solved by Word "Track Changes", Google Docs automatic
 revisions, or Dropbox's history.
 
+There are some coding equivalents as well ([Cloud 9](https://c9.io/)).
+
+---
+
+# What is harder to do with Dropbox and friends
+
 - Allowing you to try things that can easily be rolled back.
 - Keeping a version of record.
 - Keeping separate branches.
+
 
 ### Where to use version control
 
@@ -75,6 +92,10 @@ Text-based files have built-in support, other types of files can also be used.
 ---
 
 # Diffing
+
+The reason why git works so well with text is because of _diff_ ing:
+
+--
 
 ```bash
 $ cat file1.txt
@@ -92,29 +113,48 @@ $ diff -u file1.txt file2.txt
  +third line
 ```
 
+--
+
+We will see that we can also _diff_ images and other types of texts, but
+requires some set up.
+
+
 ---
 
 # Git's model
 
 - Works on a directory and all its subdirectories.
 
-If we didn't have git, we could make a "poor man's git" in the following way:
+--
+
+
+If we didn't have git, we could make a _poor man's git_ in the following way:
 
 - We take a directory for our project `project`.
+
 - Every once in a while, we make a whole copy of the directory:
 
-    1. `project_first_version_2016_08_22_8:14`
-    2. `project_added_data_2016_08_22_11:27`
-    3. `project_import_data_into_numpy_2016_08_22_15:22`
-    4. `project_basic_stats_2016_08_22_17:01`
-    5. `project_normalization_2016_08_23_9:53`
-    6. ...
+--
 
-If you were very disciplined, this would actually work. You could then use diff
-to compare versions.
+1. `project_first_version_2016_08_22_8:14`
+2. `project_added_data_2016_08_22_11:27`
+3. `project_import_data_into_numpy_2016_08_22_15:22`
+4. `project_basic_stats_2016_08_22_17:01`
+5. `project_normalization_2016_08_23_9:53`
+6. ...
 
-This poor man's git is not so different from what git does (except git does it
-in a smarter way than copying all the files).
+--
+
+**If you were very disciplined**, this would actually work. You could then use
+diff to compare versions.
+
+---
+
+# Poor man's git
+
+![](figures/poor-mans-git.png)
+
+This poor man's git is not so different from the git model.
 
 ---
 
@@ -131,6 +171,7 @@ Let's look at
 
 For example,
 [this diff](https://github.com/tobyhodges/ITPP/commit/7f765f1bd4149ba12d7927fa5bc0cfac68ba1f78)
+
 
 ---
 
@@ -374,6 +415,21 @@ As part of this commit, simplify the data loading code.
 
 ---
 
+# Git blame
+
+Have you ever looked at some code and asked "why would anybody do something
+like this??"
+
+--
+
+```bash
+$ git blame
+```
+
+This is really only possible with text files.
+
+---
+
 # Commit IDs
 
 We have seen these bizarre commit-ids (e.g.,
@@ -502,11 +558,11 @@ We need to introduce a new concept: "remotes".
 
 Fortunately, github is pretty good about helping out.
 
-
 --
 
 ```bash
 $ git remote add origin https://github.com/luispedro/git-notes-luispedro
+$ git push -u origin master
 ...
 ```
 
@@ -653,6 +709,7 @@ to see a conflict message!
 ```
 
 ---
+
 # Resolving conflicts
 
 Git is not magic. If it cannot merge, it will ask _Bob_ to fix it.
@@ -754,7 +811,149 @@ Probably **most open source software** works like this.
 
 ---
 
-# Integrate git(hub) with other functionality
+# Breakpoint
+
+Let's review:
+
+What git does:
+
+- keeps and organizes history
+- enables collaboration by clone and merge
+- github is built on top of git
+
+- do you have any questions?
+- do you see why this is useful?
+
+---
+# Git branches
+
+
+Remember this picture?
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/branch-and-history.png)
+
+
+(These and the next few images are from the [Git book](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell))
+
+---
+# Let us create a branch
+
+```bash
+$ git branch testing
+```
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/two-branches.png)
+
+
+---
+# Where we are
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/head-to-master.png)
+
+---
+# Changing the HEAD pointer
+
+
+```bash
+$ git checkout testing
+```
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/head-to-testing.png)
+
+You could also have created a branch and switched to it in one go:
+
+```bash
+$ git checkout -b testing
+```
+
+--
+
+`git checkout` does too many similar but not quite the same things with funky
+options.
+
+---
+# Committing to the new branch
+
+```bash
+$ nano alice.txt
+...
+$ git add alice.txt
+$ git commit -m "Added Alice's favorite breakfast"
+```
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/advance-testing.png)
+
+
+---
+# Going back to master and working there
+
+```bash
+$ git checkout master
+$ nano alice.txt
+```
+
+See how the file is like it was before?
+
+```bash
+$ git add bob.txt
+$ git commit -m "Added Bob's favorite breakfast"
+```
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/advance-master.png)
+
+---
+# Merging branches
+
+We actually saw this already (even if you didn't really know it):
+
+```bash
+$ git status
+...
+* $ git merge testing
+```
+
+We merge the branches back.
+
+--
+
+Looking at the graph:
+
+```bash
+$ git-cola
+...
+```
+
+---
+# Why would anybody ever want to use branches??
+
+--
+
+Common scenarios:
+
+- *stable version* and *development version*
+- *feature branches*
+- *throw-away branches*
+
+At the beginning one of _git_'s major selling points was _cheap branching_.
+
+--
+
+Here is one interesting repository with several branches: [https://github.com/python/cpython](https://github.com/python/cpython).
+
+---
+
+# Github misc
+
+## README files
+
+The text that shows up is just another file
+
+## Image diff
+
+[Github is pretty good about image diffs](https://github.com/luispedro/alice-bob)
+
+
+## Integrate git(hub) with other functionality
 
 - Github pages
 - External
@@ -787,7 +986,7 @@ DT { font-weight: bold; }
 DD { padding-bottom: 1em; }
 </style>
 <dl>
-<dt>Default (if you say nothing)</dt>
+<dt>Default (if you do not say anything)</dt>
 <dd>All rights reserved.<br />
 In copyright law, the creator retains all rights to their creation unless they give/sell them away.<br />
 Technically, nobody can do anything with your code.
@@ -811,7 +1010,8 @@ commons](https://creativecommons.org/) family of licenses.
 We can have long discussions on how to organize branches.
 
 There are several advanced git commands that allow you to rewrite history, undo
-mistakes, and perform advanced branch manipulations.
+mistakes, perform advanced branch manipulations, merging strategies and options
+(`git rerere` is a command I only learned about while preparing this tutorial).
 
 --
 
