@@ -654,7 +654,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
 ---
-# Merging &amp; Conflicts
+# Merging &amp; conflicts (II)
 
 ```bash
 $ git pull
@@ -687,12 +687,15 @@ Now, they are back in sync.
 What if git cannot merge?
 
 1. _Alice_ edits `alice.txt` and `add`s, `commit`s and `push`es her changes.
-2. _Bob_  edits `alice.txt` and `add`s, commit`s and `push`es his changes (**after** Alice).
+2. _Bob_  edits `alice.txt` and `add`s, `commit`s and `push`es his changes (**after** Alice).
 
 _Bob_ will get the same non-fast-forward error and will try to `git pull` only
 to see a conflict message!
 
-```bash
+--
+
+```
+$ git pull
 [master 687aaf1] Bob's favorite drink
  1 file changed, 1 insertion(+)
   create mode 100644 bob.txt
@@ -702,11 +705,15 @@ to see a conflict message!
   remote: Total 3 (delta 0), reused 0 (delta 0)
   Unpacking objects: 100% (3/3), done.
   From /tmp/git-notes-luispedro
-     3f9cca8..262601a  master     -> origin/master
+     3f9cca8..262601a  master     -&gt; origin/master
      Auto-merging bob.txt
-     CONFLICT (add/add): Merge conflict in bob.txt
-     Automatic merge failed; fix conflicts and then commit the result.
+*     CONFLICT (add/add): Merge conflict in bob.txt
+*     Automatic merge failed; fix conflicts and then commit the result.
 ```
+
+--
+
+Don't panic.
 
 ---
 
@@ -738,14 +745,15 @@ Edit `bob.txt`:
 
 ```bash
 $ nano bob.txt
-<<<<<<< HEAD
+* <<<<<<< HEAD
 Bob likes mango lassi
-=======
+* =======
 Bob likes gin & tonic
->>>>>>> 262601a49bdbc69f1dc65a558f80b97975f6f896
+* >>>>>>> 262601a49bdbc69f1dc65a558f80b97975f6f896
 ```
 
 --
+
 ```bash
 $ git add bob.txt
 $ git commit
@@ -756,8 +764,11 @@ Now look at how the repository looks like on github.
 
 See `Graphs` tab and then `Network`.
 
+![](figures/green-post-it.png) Put up a green sticker once you have done so.
+
+
 ---
-# Pull requests
+# Pull requests (PR)
 
 Git is extremely flexible and supports different workflows/code management
 styles:
@@ -942,6 +953,14 @@ Here is one interesting repository with several branches: [https://github.com/py
 
 ---
 
+# Now we understand _fast-forward merging_
+
+![](https://git-scm.com/book/en/v2/book/03-git-branching/images/advance-testing.png)
+
+Merging _testing_ into master is just fast-forwarding _master_.
+
+---
+
 # Github misc
 
 ## README files
@@ -1016,6 +1035,15 @@ mistakes, perform advanced branch manipulations, merging strategies and options
 --
 
 ![](https://bookwormsandcoffeemonsters.files.wordpress.com/2014/12/here-be-dragons.jpg)
+
+---
+# More information
+
+- [Software carpentry git course](https://swcarpentry.github.io/git-novice/)
+- [Github's documentation](https://help.github.com/articles/good-resources-for-learning-git-and-github/)
+- [Github's cheat sheets](https://services.github.com/resources/)
+- [Git challenge](https://try.github.io/)
+- [Git book](https://git-scm.com)
 
 ---
 
