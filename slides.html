@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Introduction to Git &amp; Github</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -29,6 +29,10 @@ IMG {
 class: center, middle
 
 # Introduction to Git &amp; Github
+
+[Luis Pedro Coelho](http://luispedro.org)
+
+[@luispedrocoelho](https://twitter.com/luispedrocoelho)
 
 ---
 
@@ -561,13 +565,15 @@ Fortunately, github is pretty good about helping out.
 --
 
 ```bash
-$ git remote add origin https://github.com/luispedro/git-notes-luispedro
+* $ git remote add origin https://github.com/luispedro/git-notes-luispedro
 $ git push -u origin master
 ...
 ```
 
 We **add a remote** called _origin_ (just a convention) pointing to
 https://github.com/luispedro/git-notes-luispedro
+
+**Do not use the git@github.com URL**
 
 ---
 # Technical note on authentication
@@ -585,6 +591,15 @@ and we will type out our username/password on the command line.
 This works but is not the best way to do it. There is a solution (SSH keys),
 but we will not cover it here. The github documentation explains it.
 
+So, add the remote like shown below (HTTPS):
+
+```bash
+* $ git remote add origin https://github.com/luispedro/git-notes-luispedro
+$ git push -u origin master
+...
+```
+
+![](figures/green-post-it.png) Put up a green sticker once you have done so.
 
 ---
 
@@ -781,6 +796,10 @@ Note that git itself does not care about any of this: it's all "human level".
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/integration-manager.png)
 
+--
+
+The developer specific repos do not need to be *fully public*, just visible to others in the project.
+
 ---
 
 # The PR model
@@ -877,10 +896,6 @@ You could also have created a branch and switched to it in one go:
 $ git checkout -b testing
 ```
 
---
-
-`git checkout` does too many similar but not quite the same things with funky
-options.
 
 ---
 # Committing to the new branch
@@ -958,6 +973,11 @@ Here is one interesting repository with several branches: [https://github.com/py
 ![](https://git-scm.com/book/en/v2/book/03-git-branching/images/advance-testing.png)
 
 Merging _testing_ into master is just fast-forwarding _master_.
+
+--
+
+Note: _master_ is also not a magical name, either, it's just the name of the
+branch that `git init` creates and most people do not change it.
 
 ---
 
