@@ -166,7 +166,7 @@ This poor man's git is not so different from the git model.
 
 Github is git + bells &amp; whistles
 
-[https://github.com/tobyhodges/ITPP](https://github.com/tobyhodges/ITPP)
+[https://github.com/tobyhodges/software-carpentry-embl-2017](https://github.com/tobyhodges/software-carpentry-embl-2017)
 
 
 Let's look at
@@ -174,7 +174,7 @@ Let's look at
 - Diffs
 
 For example,
-[this diff](https://github.com/tobyhodges/ITPP/commit/7f765f1bd4149ba12d7927fa5bc0cfac68ba1f78)
+[this diff](https://github.com/tobyhodges/software-carpentry-embl-2017/commit/331f6ecbb84ea3beed77afad4d4347a5fca3bb51)
 
 
 ---
@@ -195,16 +195,16 @@ If you want another editor, naturally, you can set it there (including GUI edito
 # Using git: step 1
 
 ```bash
-$ git clone https://github.com/tobyhodges/ITPP/
-Cloning into 'ITPP'...
-remote: Counting objects: 459, done.
-remote: Total 459 (delta 0), reused 0 (delta 0), pack-reused 459
-Receiving objects: 100% (459/459), 2.88 MiB | 474.00 KiB/s, done.
-Resolving deltas: 100% (257/257), done.
-Checking connectivity... done.
+$ git clone https://github.com/tobyhodges/software-carpentry-embl-2017
+Cloning into 'software-carpentry-embl-2017'...
+remote: Counting objects: 123, done.
+remote: Compressing objects: 100% (89/89), done.
+remote: Total 123 (delta 58), reused 95 (delta 30), pack-reused 0
+Receiving objects: 100% (123/123), 1.01 MiB | 33.00 KiB/s, done.
+Resolving deltas: 100% (58/58), done.
 ```
 
-Git now _cloned_ the repository from github to a directory called `ITPP`.
+Git now _cloned_ the repository from github to a directory called `software-carpentry-2017`.
 
 Your copy is now **independent** of the original.
 
@@ -215,7 +215,7 @@ Your copy is now **independent** of the original.
 Let's explore the directory a bit:
 
 ```bash
-$ cd ITPP
+$ cd software-carpentry-embl-2017
 $ ls
 ```
 
@@ -241,19 +241,19 @@ Same information as on the github website:
 
 What we have here is
 
-1. the `project` directory (ITPP in this case)
+1. the `project` directory (`software-carpentry-2017` in this case)
 2. inside a special `.git` folder, git is saving all the previous versions.
 
 
 ```bash
-$ git diff 28c80e7299977392a3be6b00ad5be71cf3f46f8a
+$ git diff 331f6ecbb84ea3beed77afad4d4347a5fca3bb51
 ...
 ```
 
 You can also use dates if you really want
 
 ```bash
-$ git diff '@{2016-09-01 18:30:00}'
+$ git diff '@{2017-10-18 18:30:00}'
 ```
 
 (This is just another example of git's flexibility over learnability).
@@ -265,10 +265,10 @@ If you have a course that you taught several times, it's sometimes nice again
 "the version I taught in September 2016"?
 
 ```bash
-$ ls .ipynb_checkpoints
-ls: cannot access '.ipynb_checkpoints': No such file or directory
-$ git checkout 28c80e7299977392a3be6b00ad5be71cf3f46f8a
-Note: checking out '28c80e7299977392a3be6b00ad5be71cf3f46f8a'.
+$ ls Day3
+...
+$ git checkout 331f6ecbb84ea3beed77afad4d4347a5fca3bb51
+Note: checking out '28c80e7299977392a3be6b00ad5be71cf3f46f8a'.331f6ecbb84ea3beed77afad4d4347a5fca3bb51
 
 You are in 'detached HEAD' state. You can look around, make experimental
 changes and commit them, and you can discard any commits you make in this
@@ -279,9 +279,9 @@ do so (now or later) by using -b with the checkout command again. Example:
 
   git checkout -b <new-branch-name>
 
-HEAD is now at 28c80e7... merged Karin's changes to WS2 debugging exercise
-$ ls .ipynb_checkpoints
-2_BeginningProgramming-checkpoint.ipynb  3_InputAndOutputMPL-checkpoint.ipynb
+HEAD is now at 331f6ec... module vs library added
+$ ls Day3
+ls: cannot access 'Day3': No such file or directory
 ```
 
 ---
@@ -337,17 +337,20 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```bash
 $ git diff
 diff --git a/README.md b/README.md
-index 3908015..015fcd9 100644
+index adbb224..0477b35 100644
 --- a/README.md
 +++ b/README.md
-@@ -1,4 +1,7 @@
- ## Introduction to Python Programming
- +
- +These are the materials used in the software carpentry course.
- +
-  ###### Materials for a course providing an introduction to programming in Python.
-   
-   __Click the button below to launch the course materials in an interactive environment, thanks to the [Binder](http://mybinder.org) service from [The Freeman Lab](http://thefreemanlab.com).__ (Current build of Binder materials: 07-Apr-2016)  
+@@ -5,9 +5,9 @@ Materials for Software Carpentry workshop at the European Molecular Biology Labo
+
+ ### Instructors
+
++- Luis Pedro Coelho
+ - Toby Hodges
+ - Malvika Sharan
+-- Luis Pedro Coelho
+ - Frank Thommen
+ - Mike Smith
+ - Thomas Schwarzl
 ```
 
 ---
